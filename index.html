@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Carta de Amor</title>
+
+  <style>
+    :root{
+      --bg1:#07010f;
+      --bg2:#120024;
+      --card:#0f071a;
+      --card2:#140a22;
+      --ink:#f7eaff;
+      --muted:#d6b7ff;
+      --gold:#ffdb8a;
+      --rose:#ff77c8;
+      --purple:#b44cff;
+      --purple2:#7a2cff;
+      --line:rgba(255,255,255,.10);
+      --soft:rgba(255,255,255,.06);
+      --shadow: 0 25px 70px rgba(0,0,0,.75);
+    }
+
+    *{box-sizing:border-box; margin:0; padding:0;}
+    body{
+      min-height:100vh;
+      font-family: "Georgia", "Times New Roman", serif;
+      background:
+        radial-gradient(1200px 800px at 20% 15%, rgba(180,76,255,.18), transparent 60%),
+        radial-gradient(900px 700px at 80% 20%, rgba(255,119,200,.12), transparent 65%),
+        radial-gradient(1000px 800px at 50% 90%, rgba(255,219,138,.10), transparent 60%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      color: var(--ink);
+      overflow-x:hidden;
+      padding: 40px 18px;
+    }
+
+    /* Estrellas sutiles */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background-image:
+        radial-gradient(2px 2px at 15% 20%, rgba(255,255,255,.22), transparent 60%),
+        radial-gradient(1.5px 1.5px at 35% 70%, rgba(255,255,255,.18), transparent 60%),
+        radial-gradient(2px 2px at 65% 35%, rgba(255,255,255,.20), transparent 60%),
+        radial-gradient(1px 1px at 85% 60%, rgba(255,255,255,.15), transparent 60%),
+        radial-gradient(2px 2px at 55% 15%, rgba(255,255,255,.18), transparent 60%),
+        radial-gradient(1px 1px at 25% 90%, rgba(255,255,255,.14), transparent 60%);
+      opacity:.65;
+      pointer-events:none;
+      z-index:0;
+      filter: blur(.2px);
+    }
+
+    .wrapper{
+      position:relative;
+      z-index:2;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    /* Marco elegante */
+    .frame{
+      position:relative;
+      border-radius: 28px;
+      padding: 18px;
+      background: linear-gradient(135deg, rgba(180,76,255,.35), rgba(255,119,200,.18), rgba(255,219,138,.12));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .frame::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(600px 260px at 20% 0%, rgba(255,255,255,.12), transparent 70%),
+        radial-gradient(500px 220px at 90% 30%, rgba(255,255,255,.08), transparent 70%),
+        radial-gradient(800px 400px at 50% 100%, rgba(180,76,255,.14), transparent 70%);
+      opacity:.8;
+      pointer-events:none;
+    }
+
+    /* Cuerpo de la carta */
+    .letter{
+      position:relative;
+      border-radius: 22px;
+      padding: 46px 44px 40px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)),
+        radial-gradient(800px 500px at 20% 0%, rgba(180,76,255,.12), transparent 70%),
+        radial-gradient(900px 500px at 80% 30%, rgba(255,119,200,.10), transparent 70%),
+        linear-gradient(180deg, var(--card), var(--card2));
+      border: 1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+    }
+
+    /* Brillos suaves internos */
+    .letter::after{
+      content:"";
+      position:absolute;
+      inset:-80px;
+      background:
+        conic-gradient(from 180deg at 50% 50%,
+          rgba(180,76,255,.10),
+          rgba(255,119,200,.08),
+          rgba(255,219,138,.08),
+          rgba(180,76,255,.10)
+        );
+      opacity:.35;
+      filter: blur(50px);
+      pointer-events:none;
+      z-index:0;
+    }
+
+    .content{
+      position:relative;
+      z-index:2;
+    }
+
+    /* Encabezado */
+    .header{
+      text-align:center;
+      margin-bottom: 26px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .title{
+      font-size: 34px;
+      letter-spacing: 1px;
+      color: var(--gold);
+      text-shadow: 0 0 18px rgba(255,219,138,.20);
+      margin-bottom: 8px;
+    }
+
+    .date{
+      font-size: 15px;
+      color: var(--muted);
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+
+    /* Separador decorativo */
+    .divider{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap: 10px;
+      margin: 22px auto 12px;
+      opacity:.9;
+    }
+
+    .divider span{
+      height: 1px;
+      width: 110px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+    }
+
+    .divider .heart{
+      font-size: 18px;
+      color: var(--rose);
+      text-shadow: 0 0 18px rgba(255,119,200,.35);
+    }
+
+    /* Texto */
+    .body{
+      font-size: 18px;
+      line-height: 1.9;
+      color: rgba(247,234,255,.95);
+      letter-spacing: .2px;
+      text-align: justify;
+    }
+
+    .body p{
+      margin: 18px 0;
+    }
+
+    .body strong{
+      color: #fff;
+      text-shadow: 0 0 14px rgba(180,76,255,.22);
+    }
+
+    /* Frases destacadas */
+    .highlight{
+      margin: 26px 0;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 0 40px rgba(180,76,255,.08);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .highlight::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(400px 180px at 20% 20%, rgba(180,76,255,.16), transparent 70%),
+        radial-gradient(350px 200px at 80% 60%, rgba(255,119,200,.10), transparent 70%);
+      opacity:.7;
+      pointer-events:none;
+    }
+
+    .highlight .txt{
+      position:relative;
+      z-index:2;
+      font-size: 18px;
+      line-height: 1.8;
+      color: rgba(247,234,255,.97);
+      text-align:center;
+    }
+
+    /* Firma */
+    .signature{
+      margin-top: 30px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      text-align:center;
+    }
+
+    .signature .closing{
+      font-size: 18px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .signature .name{
+      font-size: 20px;
+      letter-spacing: 1px;
+      color: #fff;
+      text-shadow: 0 0 18px rgba(255,255,255,.12);
+      font-weight: 700;
+    }
+
+    .signature .owner{
+      margin-top: 8px;
+      font-size: 16px;
+      color: rgba(214,183,255,.95);
+      letter-spacing: .6px;
+    }
+
+    /* Frase final neon */
+    .final-neon{
+      margin-top: 34px;
+      border-radius: 22px;
+      padding: 22px 22px;
+      text-align:center;
+      border: 1px solid rgba(180,76,255,.35);
+      background: rgba(15,5,25,.55);
+      box-shadow:
+        0 0 22px rgba(180,76,255,.35),
+        0 0 65px rgba(180,76,255,.18),
+        inset 0 0 18px rgba(180,76,255,.18);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .final-neon::before{
+      content:"";
+      position:absolute;
+      inset:-60px;
+      background:
+        radial-gradient(500px 220px at 50% 20%, rgba(180,76,255,.35), transparent 70%),
+        radial-gradient(600px 280px at 20% 90%, rgba(122,44,255,.20), transparent 70%),
+        radial-gradient(500px 250px at 90% 80%, rgba(255,119,200,.15), transparent 70%);
+      opacity:.75;
+      filter: blur(20px);
+      pointer-events:none;
+    }
+
+    .final-neon .phrase{
+      position:relative;
+      z-index:2;
+      font-size: 17px;
+      line-height: 1.85;
+      letter-spacing: .4px;
+      color: #f4eaff;
+      text-shadow:
+        0 0 8px rgba(180,76,255,.65),
+        0 0 20px rgba(180,76,255,.35),
+        0 0 35px rgba(180,76,255,.25);
+    }
+
+    .final-neon .phrase strong{
+      font-weight: 900;
+      color: #ffffff;
+      text-shadow:
+        0 0 10px rgba(180,76,255,.85),
+        0 0 25px rgba(180,76,255,.55),
+        0 0 45px rgba(180,76,255,.35);
+    }
+
+    .final-neon .phrase .valeria{
+      display:inline-block;
+      margin-top: 8px;
+      padding: 6px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(180,76,255,.40);
+      background: rgba(180,76,255,.10);
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-shadow:
+        0 0 12px rgba(180,76,255,.90),
+        0 0 28px rgba(180,76,255,.55),
+        0 0 55px rgba(180,76,255,.35);
+      box-shadow: 0 0 25px rgba(180,76,255,.25);
+    }
+
+    /* Pie decorativo */
+    .footer-icons{
+      margin-top: 18px;
+      text-align:center;
+      color: rgba(214,183,255,.85);
+      letter-spacing: 8px;
+      font-size: 18px;
+      opacity:.85;
+      user-select:none;
+    }
+
+    /* Responsive */
+    @media (max-width: 700px){
+      .letter{
+        padding: 34px 18px 28px;
+      }
+      .title{
+        font-size: 28px;
+      }
+      .body{
+        font-size: 16.8px;
+        line-height: 1.85;
+      }
+      .divider span{
+        width: 70px;
+      }
+      .final-neon .phrase{
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="frame">
+      <div class="letter">
+        <div class="content">
+
+          <div class="header">
+            <div class="title">Carta de Amor</div>
+            <div class="date">Jueves, 30 de abril de 2026 — Noche</div>
+
+            <div class="divider">
+              <span></span>
+              <div class="heart">❤</div>
+              <span></span>
+            </div>
+          </div>
+
+          <div class="body">
+            <p><strong>Mi amor,</strong></p>
+
+            <p>
+              Esta noche el silencio se siente diferente… como si el mundo se hubiera detenido solo para dejarme pensar en ti.
+              Y aquí estoy, con el corazón acelerado, con la mente llena de tu nombre, y con esa necesidad inevitable de escribirte,
+              porque lo que siento por ti no se puede guardar, no se puede esconder, no se puede callar.
+            </p>
+
+            <p>
+              Hoy quiero decirte algo que nace desde lo más profundo de mí:
+              <strong>te amo de una manera intensa, verdadera y completa.</strong>
+              No es un amor suave ni pasajero… es un amor que se queda, que arde, que crece.
+              Un amor que me toma por dentro como una llama que no se apaga, como una promesa que se repite en mi pecho cada vez que pienso en ti.
+            </p>
+
+            <p>
+              A veces me sorprende lo mucho que me haces sentir… porque contigo no existen las emociones pequeñas.
+              Contigo todo se vuelve enorme: la alegría, el deseo, la ternura, la necesidad.
+              Tú logras que mi corazón se vuelva vulnerable, pero también fuerte… porque amarte me da vida, me da razones,
+              me da un sentido que nunca había encontrado en nadie.
+            </p>
+
+            <div class="highlight">
+              <div class="txt">
+                <strong>
+                  Y no es solo que me gustes… es que me encantas de una manera peligrosa.
+                </strong>
+                <br/>
+                Me encanta tu forma de ser, tu esencia, tu energía.
+                Me encanta cómo tu presencia puede cambiar por completo mi día,
+                cómo tu voz me calma, cómo tu mirada me enciende.
+              </div>
+            </div>
+
+            <p>
+              Hay algo en ti que me atrapa, que me domina, que me hace sentir que no quiero a nadie más… que no necesito a nadie más.
+            </p>
+
+            <p>
+              Cuando te imagino cerca, mi amor… mi cuerpo reacciona como si te estuviera tocando.
+              Como si pudiera sentir tu piel, tu calor, tu aroma.
+              Y es inevitable… porque <strong>tú eres mi deseo más profundo.</strong>
+              Eres esa persona que no solo amo con el alma, sino también con el cuerpo,
+              con las ganas, con la intensidad de alguien que encontró lo que siempre buscó.
+            </p>
+
+            <p>
+              Quiero que lo sepas esta noche:
+              <br/>
+              <strong>yo no te amo a medias.</strong>
+              <br/>
+              Yo te amo con una pasión que no sabe ser tranquila.
+              Te amo con esa forma de amar que no se rinde, que no se enfría, que no se cansa.
+              Te amo como si mi corazón te perteneciera desde antes de conocerte,
+              como si mi destino hubiera tenido tu nombre escrito desde el principio.
+            </p>
+
+            <p>
+              Y si algún día dudas de lo que significas para mí, recuerda esto:
+              <strong>tú eres mi lugar favorito, mi pensamiento más constante, mi debilidad más hermosa… y también mi fuerza.</strong>
+            </p>
+
+            <div class="highlight">
+              <div class="txt">
+                Porque tú no eres solo mi novia…
+                <br/>
+                <strong>tú eres mi amor, mi ilusión, mi sueño hecho realidad.</strong>
+              </div>
+            </div>
+
+            <p>
+              Eres esa persona por la que me nacen ganas de ser mejor, de cuidarte, de protegerte, de darte todo lo que mereces.
+              Eres esa mujer que me inspira a amarte con detalles, con palabras, con hechos… y con una entrega que no conoce límites.
+            </p>
+
+            <p>
+              Esta noche solo quiero dejarte algo claro, mi vida:
+            </p>
+
+            <p>
+              <strong>te deseo… te admiro… te extraño… y te amo con una intensidad que no se puede explicar.</strong>
+              <br/>
+              Y si pudiera estar contigo ahora mismo, te abrazaría tan fuerte que el mundo desaparecería,
+              te besaría con tanta pasión que se nos olvidaría el tiempo,
+              y te susurraría al oído lo que mi corazón grita cada noche:
+            </p>
+
+            <p>
+              <strong>Que eres mía en mi alma.</strong><br/>
+              <strong>Que eres mi amor más real.</strong><br/>
+              <strong>Y que yo voy a amarte siempre… incluso cuando no encuentre las palabras.</strong>
+            </p>
+
+            <p>
+              Buenas noches, mi amor…
+              <br/>
+              pero no descanses demasiado, porque yo seguiré soñándote, deseándote y amándote, como solo tú mereces.
+            </p>
+
+          </div>
+
+          <div class="signature">
+            <div class="closing"><strong>Con todo mi corazón,</strong></div>
+            <div class="name">tu amor. ❤️🔥</div>
+            <div class="owner"><strong>JUAN KALETH MENDOZA PRIMERA 💜</strong></div>
+          </div>
+
+          <div class="final-neon">
+            <div class="phrase">
+              <strong>
+                “Y si el universo me diera mil caminos, mil finales y mil destinos…
+                yo seguiría eligiendo el mismo sin pensarlo, porque mi corazón solo sabe regresar a ti.
+                Porque tu amor se volvió mi refugio, tu nombre se volvió mi oración,
+                y tu existencia se convirtió en el lugar donde mi alma se siente completa…
+                y donde mi vida encontró su verdadera razón para arder.”
+              </strong>
+              <br/>
+              <strong>
+                Hoy, mañana y siempre… mi amor más eterno termina en un solo nombre:
+                <span class="valeria">VALERIA PETRO VILLAZÓN</span>.
+              </strong>
+            </div>
+          </div>
+
+          <div class="footer-icons">✦ ✧ ❤ ✧ ✦</div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+                </html>
